@@ -1,0 +1,35 @@
+logs_file: logs.txt
+events_number: 100000
+start_time: 2.0
+queue_configurations:
+  - id: 1
+    service_interval_range: [1, 2]
+    servers: 1
+    arrival_interval_range: [2, 4]
+    routes:
+      - destination: 2
+        probability: 0.8
+      - destination: 3
+        probability: 0.2
+  - id: 2
+    service_interval_range: [4, 8]
+    servers: 2
+    capacity: 5
+    arrival_interval_range: [2, 4]
+    routes:
+      - destination: 1
+        probability: 0.3
+      - destination: 2
+        probability: 0.5
+      - destination: -1
+        probability: 0.2
+  - id: 3
+    service_interval_range: [5, 15]
+    servers: 2
+    capacity: 10
+    arrival_interval_range: [2, 4]
+    routes:
+      - destination: 3
+        probability: 0.7
+      - destination: -1
+        probability: 0.3
