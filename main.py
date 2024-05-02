@@ -1,6 +1,11 @@
+import numpy as np
+import random
 import yaml
 from queue_1 import Queue
 from queue_network import QueueNetwork
+
+np.random.seed(1)
+random.seed(1)
 
 def read_config(file_path):
     with open(file_path, 'r') as file:

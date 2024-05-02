@@ -22,22 +22,30 @@ class Queue:
     def add_destination(self, destination_id, probability):
         self.destinations.append((destination_id, probability))
 
-    def process_arrival(self, time):
+    def process_arrival(self, time, external=True):
+        if self.arrival_interval_range and external:
+            if np.random.random() < np.random.uniform(*self.arrival_interval_range):
+                self._add_customer(time)
+        else:
+            self._add_customer(time)
+
+    def _add_customer(self, time):
         self.customer_id += 1
         if len(self.queue) + len(self.in_service) < self.capacity:
-            self.queue.append((self.customer_id, time, time)) 
+            self.queue.append((self.customer_id, time, time))
             self.events.append(f"[Tempo {time:.2f}]: Cliente {self.customer_id} chegou à Fila {self.id}")
         else:
             self.lost += 1
+            self.events.append(f"[Tempo {time:.2f}]: Cliente {self.customer_id} perdido na Fila {self.id}")
 
     def start_service(self, current_time):
         while len(self.in_service) < self.servers and self.queue:
             customer_id, arrival_time, entered_queue_time = self.queue.pop(0)
             wait_time = current_time - entered_queue_time
-            self.total_wait_time += wait_time  # Acumula o tempo de espera
+            self.total_wait_time += wait_time  
             service_time = np.random.uniform(*self.service_interval_range)
             departure_time = current_time + service_time
-            self.total_service_time += service_time  # Acumula o tempo de serviço
+            self.total_service_time += service_time 
             self.in_service.append((customer_id, departure_time))
             self.events.append(f"[Tempo {current_time:.2f}]: Cliente {customer_id} iniciou o serviço na Fila {self.id}")
 
@@ -58,7 +66,7 @@ class Queue:
                 if destination_id == -1:
                     self.events.append(f"[Tempo {current_time:.2f}]: Cliente saiu do sistema a partir da Fila {self.id}")
                     return
-                else:  # Processa a chegada na próxima fila
+                else: 
                     queues_dict[destination_id].process_arrival(current_time)
                     return
 

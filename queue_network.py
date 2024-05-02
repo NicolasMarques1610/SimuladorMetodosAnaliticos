@@ -8,10 +8,10 @@ class QueueNetwork:
     def simulate(self, num_events, start_time):
         time = start_time
         for _ in range(num_events):
-            time += np.random.exponential(1)
+            time += np.random.exponential(0.3934)
+            if 'arrival_interval_range' in self.queues[1].__dict__:
+                self.queues[1].process_arrival(time, external=True)
             for queue in self.queues.values():
-                if np.random.random() < np.random.uniform(*queue.arrival_interval_range):
-                    queue.process_arrival(time)
                 queue.start_service(time)
                 queue.process_departures(time, self.queues)
         self.total_time = time - start_time
