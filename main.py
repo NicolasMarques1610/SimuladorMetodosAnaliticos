@@ -16,7 +16,7 @@ def main():
             service_interval_range=queue_config['service_interval_range'],
             servers=queue_config['servers'],
             arrival_interval_range=queue_config['arrival_interval_range'],
-            capacity=queue_config.get('capacity')  # Usa get para tratar casos onde 'capacity' não é fornecido
+            capacity=queue_config.get('capacity')
         )
         for route in queue_config.get('routes', []):
             queue.add_destination(route['destination'], route['probability'])
