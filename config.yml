@@ -15,7 +15,6 @@ queue_configurations:
     service_interval_range: [4, 8]
     servers: 2
     capacity: 5
-    arrival_interval_range: [2, 4]
     routes:
       - destination: 1
         probability: 0.3
@@ -27,7 +26,6 @@ queue_configurations:
     service_interval_range: [5, 15]
     servers: 2
     capacity: 10
-    arrival_interval_range: [2, 4]
     routes:
       - destination: 3
         probability: 0.7
